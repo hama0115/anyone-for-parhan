@@ -1,0 +1,975 @@
+/* 
+Theme Name: anyone-for-parhan
+Theme URI: https://parhan.jp
+Description: パーキング飯のテーマです。
+Version: 1.0
+Author: AcousticStation
+Author URI: https://parhan.jp
+*/
+
+/* 
+SPファーストで記述
+メディアクエリは後半にまとめている
+marginは基本はtopにかけるが、デザインの都合上ボトムにかけたい場合は「margin-bottom」を使う
+優先順位は、プラグイン自体のCSS→style.cssであることに注意(自分のCSSでプラグインのCSSを打ち消していないか要確認)
+フォントはgoogleフォントを使用
+*/
+
+/* ========================
+全体
+======================== */
+
+/* カスタムプロパティ */
+:root {
+  --base-color: #fff;
+  --main-color: rgb(000, 019, 172);
+  --accent-color: rgb(110, 197, 227);
+}
+
+/*
+リセットCSSで変わっていない部分をリセット
+およびフォントなど全体に関わる部分を変更
+*/
+*,
+::before,
+::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+ 
+ul,
+ol {
+  list-style: none;
+}
+ 
+a {
+  color: inherit;
+  text-decoration: none;
+  /* トランジションを滑らかに */
+  transition-duration: 0.3s;
+}
+/* リンクホバー時にテキストカラーを変更 */
+a:hover {
+  color: #d4d4d4;
+}
+
+body {
+  font-family: "Noto Sans JP", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 16px;
+  color: #000000;
+  line-height: 2;
+  background-color: #ffffff;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.article-title {
+  font-family: "Klee One", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ========================
+コンポーネント
+======================== */
+
+/*---- ボタン ----*/
+ 
+/* ========================
+ヘッダー
+======================== */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  background-color: #fff;
+}
+
+.header-inner {
+  position: relative;
+  height: 70px;
+  max-width: 1200px;
+  padding: 0 20px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-logo {
+  display: inline-block;
+  color: var(--main-color);
+}
+.btn-menu {
+  display: block;
+  width: 44px;
+  height: 34px;
+  background-image: url(./assets/img/icon-menu.png);
+  background-size: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: solid 2px #000;
+  border-radius: 0;
+  outline: none;
+}
+.site-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #fff;
+  background-color: var(--main-color);
+  overflow-x: hidden;
+  width: 0;
+  transition-duration: 0.5s;
+}
+.site-menu.open-menu {
+  width: 100%;
+}
+.site-menu ul li {
+  margin: 2rem 0;
+}
+.site-menu ul li a {
+  display: inline-block;
+  padding: 1em 3em;
+  white-space: nowrap;
+}
+.site-menu ul li a:hover {
+  color: var(--main-color);
+  background-color: #fff;
+}
+
+/* ========================
+メイン
+======================== */
+.main {
+  padding: 30px 20px 2rem;
+}
+/* コンテンツをはみ出ないようにする、および中央揃えに */
+.container {
+  width: clamp(335px, 85%, 1200px);
+  margin: auto;
+}
+
+/*---- アーカイブページ ----*/
+
+.page-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+.article-list li a {
+  display: block;
+  overflow: hidden;
+}
+.article-list li a:hover .thumbnail-area img{
+  transform: scale(1.05);
+}
+.thumbnail-area {
+  overflow: hidden;
+}
+.thumbnail-area img {
+  /* overflow:hidden; を効かせるためdisplayを変更*/
+  display: block;
+  
+  transition-duration: 0.3s;
+}
+.text {
+  padding: 0.75rem 0 2rem;
+}
+.entry-date {
+  font-size: 0.75rem;
+  margin: 0 0 0 1em;
+  color: #d4d4d4;
+}
+.entry-date:before {
+  font-family: "Font Awesome 6 Free";
+  content: '\f274';
+  margin-right: 0.5em;
+}
+.article-title {
+  font-size: 1rem;
+  margin-top: 0.67em;
+}
+.category-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 1em;
+}
+.article-category {
+  font-size: 0.625rem;
+  padding: 0.2em 0.8em;
+  border: solid 1px var(--main-color);
+  color: var(--main-color);
+  font-weight: 400;
+}
+.category-list li:not(.category-list li:first-child) {
+  margin-left: 1em;
+}
+
+/*-- 個別投稿ページ(.single-post) --*/
+
+/* 個別投稿ページではサイドバーのアーカイブを非表示に */
+.single-post .archive-block {
+  display: none;
+}
+ 
+/* タイトルエリア */
+.single-article .article-title {
+  font-size: 1.25rem;
+}
+.single-article .entry-date {
+  margin: 1em 0 0 0.5em;
+}
+
+/* カテゴリのCSSはアーカイブページのほうでベースを調節しているので注意 */
+.single-article .category-list {
+  margin: 0.5em 0 0.5em 0.5em;
+}
+
+/* アイキャッチエリア */
+.eyecatch-area {
+  padding: 1rem 0;
+}
+
+/* 記事の本文 */
+.article-content {
+  padding: 1rem 0;
+}
+.article-content h2 {
+  font-size: 1.25rem;
+  margin: 3rem 0 1em 0;
+  padding: 0 0 0.6em 1em;
+  border-bottom: solid 1px var(--main-color);
+}
+.article-content h3 {
+  font-size: 1rem;
+  margin: 3em 0 1.5em 0;
+  padding-left: 1em;
+  border-left: solid 2px var(--main-color);
+}
+.article-content > p {
+  margin-bottom: 2em;
+  letter-spacing: 0.05em;
+}
+.article-content img {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* 前後ページリンク */
+.page-link {
+margin-bottom: 2rem;
+}
+.page-link p {
+margin-bottom: 1em;
+font-size: 0.875rem;
+}
+.prev-page-link,
+.next-page-link {
+  padding: 0.5em 1em;
+  border: solid 1px #000;
+  border-radius: 20px;
+  text-align: center;
+}
+.prev-page-link::before {
+  content: '<';
+}
+.next-page-link::after {
+  content: '>';
+} 
+ 
+/* ========================
+フッター
+======================== */
+.footer {
+  text-align: center;
+  padding: 3rem 0 1rem;
+  color: #fff;
+  background-color: var(--main-color);
+}
+.footer-logo {
+  font-size: 1.5rem;
+}
+.copyright {
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+/* ========================
+サイドバー
+======================== */
+
+.sidebar h3 {
+  font-size: 1.3rem;
+  margin: 1em 0;
+}
+
+/* SP版では検索フォームを非表示 */
+.search-block {
+  display: none;
+}
+
+/*-- 最新の記事エリア --*/
+.latest-pages {
+  line-height: 1.8;
+}
+.latest-pages h3:before {
+  font-family: "Font Awesome 6 Free";
+  content: '\f1d8';
+  color: var(--accent-color);
+  margin-right: 0.5em;
+}
+.latest-pages ul li {
+  margin-top: 0.5em;
+  border-top: solid 0.5px #000;
+  padding-top: 10px;
+}
+
+/*-- 過去のアーカイブ --*/
+.archive-block {
+  margin-top: 20px;
+}
+.archive-block h3:before {
+  font-family: "Font Awesome 6 Free";
+  content: '\f07c';
+  font-weight: 900;
+  color: var(--accent-color);
+  margin-right: 0.5em;
+}
+
+/* ========================
+ウィジェット
+======================== */
+
+/*-- リスト --*/
+.wp-block-list {
+  background-color: #f5f5f5;
+  padding: 1em 2em;
+  margin-bottom: 1em;
+}
+.wp-block-list li{
+  margin-top: 0.5em;
+  line-height: 1.5;
+  text-indent: -1em;
+  padding-left: 1em;
+}
+/* fontawesomeアイコン */
+.wp-block-list li:before{
+  font-family: "Font Awesome 6 Free";
+  content: '\f058';
+  color: var(--main-color);
+}
+
+/*-- 詩 --*/
+pre.wp-block-verse {
+  background-color: #f5f5f5;
+  padding: 1em;
+  margin: 2em 0;
+}
+
+/* ========================
+wordpressの装飾
+======================== */
+
+/*---- 動画のキャプション ----*/
+.wp-element-caption {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #c0c0c0;
+}
+/* wpデフォルトのmarginを消す */
+.wp-block-embed :where(figcaption) {
+  margin-top: 0;
+}
+
+
+
+/* ========================
+プラグイン(本から基本はコードを拝借。本のコードは、プラグイン本体のコードをある程度そのまま上書きしているよう)
+CSSの優先度に注意。クラスを詳細に指定しないとプラグインのCSSに上書きされてしまうことがある
+======================== */
+
+/* start:「ACF」(カスタムフィールド) */
+
+/* パーキング情報 ※モバイルファーストになっていないので訂正すること */
+.parking-info-container {
+  display: grid;
+}
+.parking-info-container > img {
+  width: 100%;
+  max-width: 100%;
+  height: 240px;
+  object-fit: cover;
+}
+.detail-container .spot-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.detail-container .spot-icon {
+  /* SP版はスポットアイコンは最大5コ並ぶ */
+  width: calc((100% - 50px) / 5);
+}
+
+/* 飲食店情報 */
+.restaurant-info-container {
+  display: grid;
+}
+.restaurant-info-container img {
+  width: 100%;
+  max-width: 100%;
+  height: 240px;
+  object-fit: cover;
+}
+.restaurant-info-container .acf-map {
+  width: 100%;
+  height: 240px;
+}
+/* end:「ACF」(カスタムフィールド) */
+/* start: プラグイン| LIQUIDO SPEECH BALLOON (吹き出し)の設定 */
+.liquid-speech-balloon-wrap {
+  display: flex;
+  flex-direction: row;
+  /* マージンを広く */
+  margin-bottom: 3rem;
+}
+.liquid-speech-balloon-wrap:not(.liquid-speech-balloon-vertical) .liquid-speech-balloon-arrow {
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 10px solid rgba(0, 0, 0, 0.2);
+}
+.liquid-speech-balloon-avatar {
+  flex-shrink: 0;
+  background-position: left top;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  line-height: 1;
+  position: relative;
+}
+.liquid-speech-balloon-text {
+  width: 100%;
+  /* パディングを調整 */
+  padding: 1em;
+  margin-left: 20px;
+  position: relative;
+  z-index: 1;
+}
+/* 個別投稿のpに効いている余白を無効化 */
+.liquid-speech-balloon-text p,
+.liquid-speech-balloon-text .wp-block-liquid-speech-balloon {
+    margin: 0;
+    padding: 0;
+}
+.liquid-speech-balloon-arrow {
+  content: ".";
+  width: 0;
+  height: 0;
+  color: transparent;
+  line-height: 1;
+  position: absolute;
+  z-index: 2;
+}
+
+/* start: Easy Table of Contents */
+div#ez-toc-container {
+  background: #fff;
+  border: 1px solid var(--main-color);
+}
+
+div#ez-toc-container {
+  padding-right: 20px;
+}
+
+#ez-toc-container {
+  border: 1px solid #aaa;
+  border-radius: 15px;
+  display: table;
+  padding: 1em;
+  position: relative;
+  width: auto;
+}
+
+#ez-toc-container li,
+#ez-toc-container ul,
+#ez-toc-container ul li,
+div.ez-toc-widget-container,
+div.ez-toc-widget-container li {
+  background: 0 0;
+  list-style: none;
+  line-height: 2;
+  margin: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+#ez-toc-container li,
+#ez-toc-container ul {
+  padding: 0;
+}
+
+.entry-content a,
+.entry-summary a,
+.comment-content a,
+.posts-navigation a {
+  box-shadow: inset 0 -1px 0 rgb(15, 15, 15);
+  transition: color 80ms ease-in, box-shadow 130ms ease-in-out; 
+}
+
+#ez-toc-container a {
+  color: #444;
+  box-shadow: none;
+  text-decoration: none;
+  text-shadow: none;
+}
+
+.ez-toc-counter ul {
+  counter-reset: item;
+}
+
+/* 番号ふり */
+.ez-toc-counter nav ul li a::before {
+  counter-increment: item;
+  content: counters(item, ".", decimal) ". ";
+  display: inline-block;
+  margin-right: 0.2em;
+  float: left;
+}
+
+/* end:Easy Table of Contents */
+/* start：Breadcrumb navXT*/
+
+.breadcrumb-inner {
+  font-size: 0.875rem;
+}
+.breadcrumb-inner .fas {
+  margin: 0 0.5em;
+}
+.theme-color {
+  color: var(--main-color);
+}
+
+/* 個別投稿ページでは現在の記事が表示されないようにする */
+.single-post .breadcrumb .current-item {
+  display: none;
+}
+/* 最後のfontawesomeを非表示にする */
+.single-post .breadcrumb .fas:last-of-type {
+  display: none;
+}
+
+/* end：Breadcrumb navXT */
+/* start：WP-Paginavi */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 0.5em 0;
+}
+
+/* プラグイン元のCSSを上書きしているのでクラスを詳細に指定 */
+.pagination .wp-pagenavi a,
+.pagination .wp-pagenavi span {
+  font-size: 1.25rem;
+}
+
+.pagination .wp-pagenavi a:hover {
+  color: #fff;
+  background-color: var(--main-color);
+}
+
+.pagination .wp-pagenavi .page {
+  color: var(--main-color);
+  border: solid 1px var(--main-color);
+}
+
+.pagination .wp-pagenavi span.current {
+  font-weight: inherit;
+}
+/* end：プラグイン｜WP-Paginavi */
+ 
+@media screen and (min-width: 768px) {
+ 
+  /* ========================
+  全体
+  ======================== */
+
+  .single-article img {
+    max-width: 85%;
+    height: auto;
+  }
+
+  /* ========================
+  コンポーネント
+  ======================== */
+
+  /*---- ボタン ----*/
+  .btn-area {
+    margin: 2em 0;
+  }
+  .page-btn {
+    display: block;
+    padding: 0.5em 1em;
+    margin: 0 auto;
+    background-color: var(--main-color);
+    color: #fff;
+    border: solid 1px var(--main-color); 
+    border-radius: 30px;
+    font-size: 1.5rem;
+  }
+ 
+  /* ========================
+  ヘッダー
+  ======================== */
+
+  .header {
+    position: static;
+  }
+  .header-logo {
+    font-size: 1.5rem;
+  }
+  .btn-menu {
+    display: none;
+  }
+  .site-menu {
+    /* SP時のCSSを変更 */
+    position: static;
+    color: #000;
+    background-color: #fff;
+    width: auto;
+  }
+  .site-menu ul {
+    display: flex;
+  }
+  .site-menu ul li {
+    margin: 0 2em;
+  }
+  .site-menu ul li a {
+    white-space: nowrap;
+    padding: 0.5em 1em;
+  }
+  .site-menu ul li a:hover {
+    color: #fff;
+    background-color: var(--main-color);
+  }
+ 
+  /* ========================
+  メイン
+  ======================== */
+  .main {
+    display: flex;
+    padding: 2rem 0;
+    background-color: #f5f5f5;
+  }
+  .container {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+  }
+
+  /* アーカイブページのコンテンツ */
+  .container .archive-content {
+    width: 80%;
+    padding:0 2rem 2rem;
+  }
+
+  /* シングルページのコンテンツ */
+  .container .main-content {
+    width: 80%;
+    padding: 2rem;
+    background-color: #fff;
+  }
+
+  /*---- アーカイブページ ----*/
+  .title {
+    margin: 2rem 0 1rem;
+  }
+
+  .article-list > li {
+    padding: 1em;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+	  box-shadow: 0 2px 4px 0 rgba(24, 44, 84, 0.1);	
+    transition-duration: 0.3s;
+  }
+  .article-list > li:hover {
+	  box-shadow: 5px 8px 10px 0 rgba(24, 44, 84, 0.1);	
+  }
+
+  .article-list li a {
+    display: flex;
+    align-items: center;
+  }
+
+  .thumbnail-area {
+    max-width: 200px;
+    margin-right: 20px;
+  }
+
+  .text {
+    padding: 0;
+    width: 100%;
+  }
+
+  .information {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+
+  .entry-date {
+    margin: 0;    
+  }
+
+  .category-list {
+    margin: 0;
+  }
+
+  /*---- 個別投稿ページ --*/
+
+  .single-post .archive-block {
+    display: block;
+  }
+
+  .article-content {
+    padding: 2rem 0;
+  }
+  .article-content h2 {
+    font-size: 1.5rem;
+  }
+  .article-content h3 {
+    font-size: 1.2rem;
+  }
+  .single-article .article-title {
+    font-size: 2rem;
+    margin-top: 0;
+  }
+  .eyecatch-area {
+    text-align: center;
+  }
+
+  .article-content > img {
+    margin: 0 auto 1rem;
+  }
+
+  /* 前後ページリンク */
+  .page-link {
+    display: flex;
+    justify-content: space-between;
+  }
+  .prev-page-link,
+  .next-page-link {
+    max-width: 250px;
+  }
+
+  /* 最新の記事エリア */
+  .latest-pages-title {
+    font-size: 1.5rem;
+  }
+
+  /* ========================
+  フッター
+  ======================== */
+
+  /*-- フッターのアーカイブ表示(サイドバーにもアーカイブブロックあり。共通の記述はそちらへ) --*/   
+  .footer .yearly-archive {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+  }
+  .footer .yearly-archive li {
+    font-size: 1.3rem;
+  }
+
+  /*-- 検索フォーム --*/
+  .input-group {
+    width: auto;
+  }
+  .form-control {
+    width: 100%;
+  }
+
+  /* ========================
+  サイドバー
+  ======================== */
+  .sidebar {
+    width: 13%;
+  }
+
+  /* PCではh3のmargin-topを0に */
+  .sidebar h3 {
+    margin-top: 0;
+  }
+
+  /*-- 検索フォーム(searchform.php) --*/
+  .search-block {
+    display: block;
+  }
+
+  label[for="searchword"] {
+    display: none;
+  }
+  #searchform .btn {
+    line-height: 1.5em;
+    border-width: 0;
+    color: #f0264b;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: transparent;
+  }
+  #searchform .btn span {
+    display: none;
+  }
+  .input-group {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    border-radius: 30px;
+    padding: 1em 2em;
+    color: #000;
+    background-color: #fff;
+    width: auto;
+  } 
+  .form-control {
+    padding: 0 0 0 10px;
+    line-height: 1.5em;
+    border-width: 0;
+    width: 100%;
+  }
+    
+  /*-- 検索フォーム(searchform.php) --*/
+  .search-form-block {
+    margin: 2em 0;
+  }
+  
+  /* 最新の記事エリア */
+  .latest-pages {
+    padding: 2em;
+    margin-top: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+  .latest-pages ul li {
+    margin: 0.625em 0.625em 0 1em ;
+  }
+  
+  .yearly-archive li {
+    margin: 0.5em 0;
+  }
+  .yearly-archive li::before {
+    content: '・';
+  }
+
+  /*-- 記事アーカイブ --*/
+  .archive-block {
+    padding: 2em;
+    margin-top: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+   }
+
+  /* ========================
+  ウィジェット
+  ======================== */
+
+  /*-- リスト --*/
+  /* fontawesomeアイコン */
+  .wp-block-list li:before{
+    padding-right: 1em;
+  }
+  
+   /*-- 詩 --*/
+   pre.wp-block-verse {
+    text-align: center;
+   }
+
+  /* ========================
+  wordpressの装飾
+  ======================== */
+
+  /*---- 動画のキャプション ----*/
+  .wp-element-caption {
+    font-size: 1rem;
+  }
+
+  /* ========================
+  プラグイン
+  ======================== */
+
+  /* start:「ACF」(カスタムフィールド) */
+
+  /* パーキング情報 */
+  .parking-info-container {
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .parking-info-container > img {
+    /* 優先度を高くするためPC版でも表記 */
+    max-width: 100%;
+  }
+  .detail-container .spot-list {
+    gap: 20px;
+  }
+  .detail-container .spot-icon {
+    /* PC版はスポットアイコンは最大6コ並ぶ */
+    width: calc((100% - 120px) / 6);
+  }
+
+  /* 飲食店情報 */
+  .restaurant-info-container {
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    column-gap: 30px;
+    row-gap: 20px;
+  }
+  .restaurant-info-container > img {
+    width: 100%;
+
+    /* 優先度を高くするためPC版でも表記 */
+    max-width: 100%;
+    
+    height: 240px;
+    object-fit: cover;
+  }
+  .restaurant-info-container .acf-map {
+    width: 100%;
+    height: 240px;
+  }
+  /* end:「ACF」(カスタムフィールド) */
+  /* start：プラグイン｜Breadcrumb navXT*/
+
+  .breadcrumb-inner {
+    font-size: 1rem;
+  }
+  .breadcrumb-inner .fas {
+    margin: 0 0.5em;
+  }
+  /* end：プラグイン｜Breadcrumb navXT */
+  /* start：プラグイン｜WP-Paginavi */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin: 1em 0;
+  }
+  /* end：プラグイン｜WP-Paginavi */
+ 
+}
