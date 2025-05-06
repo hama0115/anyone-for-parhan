@@ -150,10 +150,28 @@ img {
   display: inline-block;
   padding: 1em 3em;
   white-space: nowrap;
+  position: relative;
+}
+.site-menu ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--main-color);
+  transition: scale 0.4s;
+  scale: 0;
 }
 .site-menu ul li a:hover {
   color: var(--main-color);
-  background-color: #fff;
+}
+.site-menu ul li a:hover::after {
+  scale: 1;
+}
+/* サブメニュー */
+.site-menu .sub-menu {
+  display: none;
 }
 
 /* ========================
@@ -166,6 +184,26 @@ img {
 .container {
   width: clamp(335px, 85%, 1200px);
   margin: auto;
+}
+
+/*---- フロントページ ----*/
+.swiper-slide {
+  position: relative;
+}
+/* フェード切り替え時に白いブラーを挟む */
+.swiper-slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 2;
+}
+/* スライドがフェードアウトする瞬間に白くなる */
+.swiper-slide.swiper-slide-prev::before,
+.swiper-slide.swiper-slide-next::before {
+  opacity: 0.4; /* お好みで0.2〜0.6あたり調整可能 */
 }
 
 /*---- アーカイブページ ----*/
@@ -318,14 +356,27 @@ font-size: 0.875rem;
 ======================== */
 
 .sidebar h3 {
-  font-size: 1.3rem;
+  font-size: 1rem;
   margin: 1em 0;
 }
 
-/* SP版では検索フォームを非表示 */
-.search-block {
-  display: none;
+/*-- リンク集エリア --*/
+/*
+.link-area {
+  line-height: 1.8;
 }
+.link-area h3:before {
+  font-family: "Font Awesome 6 Free";
+  content: '\f1d8';
+  color: var(--accent-color);
+  margin-right: 0.5em;
+}
+.link-area ul li {
+  margin-top: 0.5em;
+  border-top: solid 0.5px #000;
+  padding-top: 10px;
+}
+*/
 
 /*-- 最新の記事エリア --*/
 .latest-pages {
@@ -357,6 +408,16 @@ font-size: 0.875rem;
 
 /* ========================
 ウィジェット
+======================== */
+
+/*-- 検索フォーム --*/
+/* SP版では検索フォームを非表示 */
+.search-block {
+  display: none;
+}
+
+/* ========================
+ブロック
 ======================== */
 
 /*-- リスト --*/
@@ -409,7 +470,7 @@ CSSの優先度に注意。クラスを詳細に指定しないとプラグイ�
 
 /* start:「ACF」(カスタムフィールド) */
 
-/* パーキング情報 ※モバイルファーストになっていないので訂正すること */
+/* パーキング情報(2:1) */
 .parking-info-container {
   display: grid;
 }
@@ -417,15 +478,46 @@ CSSの優先度に注意。クラスを詳細に指定しないとプラグイ�
   width: 100%;
   max-width: 100%;
   height: 240px;
+  /*不要?
   object-fit: cover;
+  */
 }
-.detail-container .spot-list {
+.detail-container .spot-list,
+.detail-container .convenience-list
+ {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 20px;
 }
-.detail-container .spot-icon {
+.detail-container .spot-icon,
+.detail-container .convenience-icon {
+  /* SP版はスポットアイコンは最大5コ並ぶ */
+  width: calc((100% - 50px) / 5);
+}
+
+/* パーキング情報(4:3) */
+.postid-244 .parking-info-container {
+  display: grid;
+}
+.postid-244 .parking-info-container > img {
+  width: 100%;
+  max-width: 100%;
+  height: 300px;
+  /*不要?
+  object-fit: cover;
+  */
+}
+.postid-244 .detail-container .spot-list,
+.postid-244 .detail-container .convenience-list
+ {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.postid-244 .detail-container .spot-icon,
+.postid-244 .detail-container .convenience-icon {
   /* SP版はスポットアイコンは最大5コ並ぶ */
   width: calc((100% - 50px) / 5);
 }
@@ -563,19 +655,25 @@ div.ez-toc-widget-container li {
 .breadcrumb-inner {
   font-size: 0.875rem;
 }
-.breadcrumb-inner .fas {
+.breadcrumb-inner .fas,
+.breadcrumb-inner .fa-solid {
   margin: 0 0.5em;
-}
-.theme-color {
   color: var(--main-color);
 }
 
-/* 個別投稿ページでは現在の記事が表示されないようにする */
 .single-post .breadcrumb .current-item {
   display: none;
 }
+/* 個別投稿ページ(通常投稿、「飲食店」)では現在の記事が表示されないようにする */
+.single-post .breadcrumb .current-item,
+.single-restaurant .breadcrumb .current-item {
+  display: none;
+}
 /* 最後のfontawesomeを非表示にする */
-.single-post .breadcrumb .fas:last-of-type {
+.single-post .breadcrumb .fas:last-of-type,
+.single-post .breadcrumb .fa-solid:last-of-type,
+.single-restaurant .breadcrumb .fas:last-of-type,
+.single-restaurant .breadcrumb .fa-solid:last-of-type {
   display: none;
 }
 
@@ -653,12 +751,20 @@ div.ez-toc-widget-container li {
   }
   .site-menu {
     /* SP時のCSSを変更 */
-    position: static;
+
+    /* header-innerのflexによって変わってしまった位置を元に戻す */
+    position: relative;
+    /* SP版の配置を初期状態へ */
+    top: 0;
+    /* SP版のoverflowを初期値へ */
+    overflow-x: visible;
+    
+
     color: #000;
     background-color: #fff;
     width: auto;
   }
-  .site-menu ul {
+  .site-menu > ul {
     display: flex;
   }
   .site-menu ul li {
@@ -668,10 +774,22 @@ div.ez-toc-widget-container li {
     white-space: nowrap;
     padding: 0.5em 1em;
   }
-  .site-menu ul li a:hover {
-    color: #fff;
-    background-color: var(--main-color);
+  .site-menu .sub-menu {
+    position: absolute;
+    top: 100%;
+    background-color: var(--base-color);
   }
+  /* ホバー時にサブメニューを表示 */
+  .site-menu ul > li:hover > .sub-menu {
+    display: block;
+  }
+
+  .header .search-block .input-group {
+    border: 0.5px solid #000;
+  }
+
+  /* サブメニュー */
+  
  
   /* ========================
   メイン
@@ -689,15 +807,30 @@ div.ez-toc-widget-container li {
 
   /* アーカイブページのコンテンツ */
   .container .archive-content {
-    width: 80%;
+    width: 75%;
     padding:0 2rem 2rem;
   }
 
   /* シングルページのコンテンツ */
   .container .main-content {
-    width: 80%;
+    width: 75%;
     padding: 2rem;
     background-color: #fff;
+  }
+
+  /*---- フロントページ ----*/
+
+  .front-content-title {
+    text-align: center;
+    font-size: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .tag-search-area {
+    padding: 2em;
+    margin-top: 40px;
+    background-color: #fff;
+    border-radius: 10px;
   }
 
   /*---- アーカイブページ ----*/
@@ -814,13 +947,61 @@ div.ez-toc-widget-container li {
   サイドバー
   ======================== */
   .sidebar {
-    width: 13%;
+    width: 18%;
+  }
+
+  .sidebar-inner {
+    position: sticky;
+    top: calc(70px + 2rem);
   }
 
   /* PCではh3のmargin-topを0に */
   .sidebar h3 {
     margin-top: 0;
   }
+
+  /*-- リンク集エリア --*/
+  /*
+  .link-area {
+    padding: 2em;
+    margin-top: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+  .link-area ul li {
+    margin: 0.625em 0.625em 0 1em ;
+  }
+  */
+  
+  /* 最新の記事エリア */
+  .latest-pages {
+    padding: 2em;
+    margin-top: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+  .latest-pages ul li {
+    margin: 0.625em 0.625em 0 1em ;
+  }
+  
+
+  /*-- 過去のアーカイブ --*/
+  .archive-block {
+    padding: 2em;
+    margin-top: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+  .yearly-archive li {
+    margin: 0.5em 0;
+  }
+  .yearly-archive li::before {
+    content: '・';
+  }
+
+  /* ========================
+  ウィジェット
+  ======================== */
 
   /*-- 検索フォーム(searchform.php) --*/
   .search-block {
@@ -846,10 +1027,11 @@ div.ez-toc-widget-container li {
     justify-content: center;
     margin: 0 auto;
     border-radius: 30px;
-    padding: 1em 2em;
+    padding: 0.3em 2em;
     color: #000;
     background-color: #fff;
     width: auto;
+    max-width: 80%;
   } 
   .form-control {
     padding: 0 0 0 10px;
@@ -857,40 +1039,12 @@ div.ez-toc-widget-container li {
     border-width: 0;
     width: 100%;
   }
-    
-  /*-- 検索フォーム(searchform.php) --*/
   .search-form-block {
     margin: 2em 0;
   }
-  
-  /* 最新の記事エリア */
-  .latest-pages {
-    padding: 2em;
-    margin-top: 40px;
-    background-color: #fff;
-    border-radius: 10px;
-  }
-  .latest-pages ul li {
-    margin: 0.625em 0.625em 0 1em ;
-  }
-  
-  .yearly-archive li {
-    margin: 0.5em 0;
-  }
-  .yearly-archive li::before {
-    content: '・';
-  }
-
-  /*-- 記事アーカイブ --*/
-  .archive-block {
-    padding: 2em;
-    margin-top: 40px;
-    background-color: #fff;
-    border-radius: 10px;
-   }
 
   /* ========================
-  ウィジェット
+  ブロック
   ======================== */
 
   /*-- リスト --*/
@@ -920,6 +1074,9 @@ div.ez-toc-widget-container li {
   /* start:「ACF」(カスタムフィールド) */
 
   /* パーキング情報 */
+  .article-content .parking-info-container img {
+    margin-bottom: 0;
+  }
   .parking-info-container {
     grid-template-columns: repeat(2, 1fr);
     justify-content: space-between;
@@ -928,13 +1085,40 @@ div.ez-toc-widget-container li {
   .parking-info-container > img {
     /* 優先度を高くするためPC版でも表記 */
     max-width: 100%;
+    height: 220px;
   }
-  .detail-container .spot-list {
-    gap: 20px;
+  .detail-container .spot-list,
+  .detail-container .convenience-list {
+    gap: 10px;
   }
-  .detail-container .spot-icon {
-    /* PC版はスポットアイコンは最大6コ並ぶ */
-    width: calc((100% - 120px) / 6);
+  .detail-container .spot-icon,
+  .detail-container .convenience-icon {
+    /* PC版はスポットアイコンは最大8コ並ぶ */
+    width: calc((100% - 80px) / 8);
+  }
+
+  /* パーキング情報(4:3) */
+  .postid-244 .article-content .parking-info-container img {
+    margin-bottom: 0;
+  }
+  .postid-244 .parking-info-container {
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .postid-244 .parking-info-container > img {
+    /* 優先度を高くするためPC版でも表記 */
+    max-width: 100%;
+    height: 300px;
+  }
+  .postid-244 .detail-container .spot-list,
+  .postid-244 .detail-container .convenience-list {
+    gap: 10px;
+  }
+  .postid-244 .detail-container .spot-icon,
+  .postid-244 .detail-container .convenience-icon {
+    /* PC版はスポットアイコンは最大8コ並ぶ */
+    width: calc((100% - 80px) / 8);
   }
 
   /* 飲食店情報 */

@@ -3,8 +3,27 @@
     <main class="main">    
       <div class="container">
         <div class="archive-content">
+          <!-- swiper -->
+          <div class="swiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/sample-thumbnail.jpg" alt="サンプルだお">
+              </div>
+              <div class="swiper-slide">
+                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/sample1.jpg" alt="サンプルだお">
+              </div>
+              <div class="swiper-slide">
+                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/sample2.jpeg" alt="サンプルだお">
+              </div>
+            </div>
+            <!-- ページネーション用の要素 -->
+            <div class="swiper-pagination"></div>
+            <!-- ナビゲーションボタン -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+          </div>
           <div class="content-inner">
-            <h1 class="page-title">最新の記事</h1>
+            <h2 class="front-content-title">最新の記事</h2>
             <div class="article-list-wrapper">
               <ul class="article-list">
                 <?php //最新の投稿を取得するサブループ開始
@@ -55,7 +74,27 @@
                 <?php endif; ?>
               </ul>
             </div>
-          </div>          
+          </div>
+          <div class="tag-search-area">
+            <h2 class="front-content-title">飲食店をタグから探す</h2>
+            <?php
+            $terms = get_terms([
+              'taxonomy' => 'restaurant-tag', // カスタムタクソノミーのスラッグ
+              'hide_empty' => false,          // 投稿がゼロのカテゴリも表示
+            ]);
+            if (!empty($terms) && !is_wp_error($terms)) {
+              echo '<ul class="restaurant-tag-list">';
+              foreach ($terms as $term) {
+                echo '<li>';
+                echo '<a href="' . esc_url(get_term_link($term)) . '">';
+                echo esc_html($term->name); // カテゴリ名を表示
+                echo '</a>';
+                echo '</li>';
+              }
+              echo '</ul>';
+            }
+            ?>
+          </div>
         </div>
         <aside class="sidebar">
           <div class="sidebar-inner">
