@@ -1,0 +1,179 @@
+@charset "UTF-8";
+body {
+  font-family: "Noto Sans JP", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 16px;
+  color: #000000;
+  line-height: 2;
+  background-color: #ffffff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.article-title {
+  font-family: "Klee One", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* start:「ACF」(カスタムフィールド) */
+/* パーキング情報(2:1) */
+.parking-info-container {
+  display: grid;
+}
+
+.parking-info-container > img {
+  width: 100%;
+  max-width: 100%;
+  height: 240px;
+  /*不要?
+  object-fit: cover;
+  */
+}
+
+.detail-container .spot-list,
+.detail-container .convenience-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.detail-container .spot-icon,
+.detail-container .convenience-icon {
+  /* SP版はスポットアイコンは最大5コ並ぶ */
+  width: calc((100% - 50px) / 5);
+}
+
+/* パーキング情報(4:3) */
+.postid-244 .parking-info-container {
+  display: grid;
+}
+
+.postid-244 .parking-info-container > img {
+  width: 100%;
+  max-width: 100%;
+  height: 300px;
+  /*不要?
+  object-fit: cover;
+  */
+}
+
+.postid-244 .detail-container .spot-list,
+.postid-244 .detail-container .convenience-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.postid-244 .detail-container .spot-icon,
+.postid-244 .detail-container .convenience-icon {
+  /* SP版はスポットアイコンは最大5コ並ぶ */
+  width: calc((100% - 50px) / 5);
+}
+
+/* 飲食店情報 */
+.restaurant-info-container {
+  display: grid;
+}
+
+.restaurant-info-container img {
+  width: 100%;
+  max-width: 100%;
+  height: 240px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.restaurant-info-container .acf-map {
+  width: 100%;
+  height: 240px;
+}
+
+.restaurant-desc {
+  margin-top: 1em;
+}
+
+/* end:「ACF」(カスタムフィールド) */
+@media screen and (min-width: 768px) {
+  /* start:「ACF」(カスタムフィールド) */
+  /* パーキング情報 */
+  .article-content .parking-info-container img {
+    margin-bottom: 0;
+  }
+  .parking-info-container {
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .parking-info-container > img {
+    /* 優先度を高くするためPC版でも表記 */
+    max-width: 100%;
+    height: 220px;
+  }
+  .detail-container .spot-list,
+  .detail-container .convenience-list {
+    gap: 10px;
+  }
+  .detail-container .spot-icon,
+  .detail-container .convenience-icon {
+    /* PC版はスポットアイコンは最大8コ並ぶ */
+    width: calc((100% - 80px) / 8);
+  }
+  /* パーキング情報(4:3) */
+  .postid-244 .article-content .parking-info-container img {
+    margin-bottom: 0;
+  }
+  .postid-244 .parking-info-container {
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .postid-244 .parking-info-container > img {
+    /* 優先度を高くするためPC版でも表記 */
+    max-width: 100%;
+    height: 300px;
+  }
+  .postid-244 .detail-container .spot-list,
+  .postid-244 .detail-container .convenience-list {
+    gap: 10px;
+  }
+  .postid-244 .detail-container .spot-icon,
+  .postid-244 .detail-container .convenience-icon {
+    /* PC版はスポットアイコンは最大8コ並ぶ */
+    width: calc((100% - 80px) / 8);
+  }
+  /* 飲食店情報 */
+  .restaurant-info-container {
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    -moz-column-gap: 30px;
+         column-gap: 30px;
+    row-gap: 20px;
+  }
+  .restaurant-info-container > img {
+    width: 100%;
+    /* 優先度を高くするためPC版でも表記 */
+    max-width: 100%;
+    height: 240px;
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
+  .restaurant-info-container .acf-map {
+    width: 100%;
+    height: 240px;
+  }
+  /* end:「ACF」(カスタムフィールド) */
+}

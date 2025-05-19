@@ -43,22 +43,6 @@ function enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'enqueue_scripts');
 
-//ACF「パーキングメーター情報」をショートコードで出力できるようにする([acf_parking_info]で出力)
-function parking_info_shortcode() {
-  ob_start();
-  include get_stylesheet_directory() . '/tmp/parking-info-table.php';
-  return ob_get_clean();
-}
-add_shortcode('acf_parking_info','parking_info_shortcode');
-
-//ACF「スポット情報」をショートコードで出力できるようにする([acf_spot_info]で出力)
-function spot_info_shortcode() {
-  ob_start();
-  include get_stylesheet_directory() . '/tmp/spot-info-table.php';
-  return ob_get_clean();
-}
-add_shortcode('acf_spot_info','spot_info_shortcode');
-
 //ACF「googleマップ」を出力できるようにする
 function my_acf_google_map_api( $api ){
   $api['key'] = 'AIzaSyCGatra0HuPCJJbTX2poBI-CbErfTyMe1Y';
@@ -66,10 +50,29 @@ function my_acf_google_map_api( $api ){
 }
 add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
 
-//ACF「飲食店情報」をショートコードで出力できるようにする([acf_parking_info]で出力)
-function restaurant_info_shortcode() {
-  ob_start();
-  include get_stylesheet_directory() . '/tmp/restaurant-info-table.php';
-  return ob_get_clean();
+//カスタムブロックの登録
+add_action( 'init', 'register_acf_blocks' );
+function register_acf_blocks() {
+  register_block_type( __DIR__ . '/acf-blocks/parking-meter' );
+  register_block_type( __DIR__ . '/acf-blocks/restaurant-info' );
 }
-add_shortcode('acf_restaurant_info','restaurant_info_shortcode');
+
+//ACFブロックカテゴリーの登録
+add_filter('block_categories_all', function ($categories) {
+  $new_category = [
+      'slug' => 'acf-block',
+      'title' => 'ACFブロック',
+  ];
+  
+  array_splice($categories, 1, 0, [$new_category]);
+  
+  return $categories;
+});
+
+//ブロックエディターにCSSを読み込む
+add_action('after_setup_theme', 'my_editor_support');
+function my_editor_support()
+{
+  add_theme_support('editor-styles');
+  add_editor_style('assets/css/editor-style.css');
+}

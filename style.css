@@ -24,6 +24,7 @@ marginは基本はtopにかけるが、デザインの都合上ボトムにか�
   --base-color: #fff;
   --main-color: rgb(000, 019, 172);
   --accent-color: rgb(110, 197, 227);
+  --meshi-color: #ffa71a;
 }
 
 /*
@@ -178,7 +179,7 @@ img {
 メイン
 ======================== */
 .main {
-  padding: 30px 20px 2rem;
+  padding: 70px 20px 2rem;
 }
 /* コンテンツをはみ出ないようにする、および中央揃えに */
 .container {
@@ -187,23 +188,23 @@ img {
 }
 
 /*---- フロントページ ----*/
-.swiper-slide {
-  position: relative;
+
+/* 「タグから探す」エリア */
+.restaurant-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
 }
-/* フェード切り替え時に白いブラーを挟む */
-.swiper-slide::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: white;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: 2;
+.restaurant-tag-list li a {
+  display: inline-block;
+  padding: 0.2em 0.8em;
+  color: var(--base-color);
+  background-color: #ffa71a;
+  border: solid 1px #ffa71a;
 }
-/* スライドがフェードアウトする瞬間に白くなる */
-.swiper-slide.swiper-slide-prev::before,
-.swiper-slide.swiper-slide-next::before {
-  opacity: 0.4; /* お好みで0.2〜0.6あたり調整可能 */
+.restaurant-tag-list li a:hover {
+  color: #ffa71a;
+  background-color: var(--base-color);
 }
 
 /*---- アーカイブページ ----*/
@@ -264,6 +265,12 @@ img {
 
 /*-- 個別投稿ページ(.single-post) --*/
 
+/* 画像を中央寄せ */
+.single-post .wp-block-image img {
+  display: block;
+  margin: 0 auto;
+}
+
 /* 個別投稿ページではサイドバーのアーカイブを非表示に */
 .single-post .archive-block {
   display: none;
@@ -286,6 +293,36 @@ img {
 .eyecatch-area {
   padding: 1rem 0;
 }
+
+/* スライドショー(swiper.js) */
+
+.swiper {
+  margin-top: 10px;
+}
+
+.swiper-slide {
+  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 240px;
+  object-fit: cover;  
+}
+/* フェード切り替え時に白いブラーを挟む */
+.swiper-slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 2;
+}
+/* スライドがフェードアウトする瞬間に白くなる */
+.swiper-slide.swiper-slide-prev::before,
+.swiper-slide.swiper-slide-next::before {
+  opacity: 0.4; /* お好みで0.2〜0.6あたり調整可能 */
+}
+
 
 /* 記事の本文 */
 .article-content {
@@ -355,28 +392,14 @@ font-size: 0.875rem;
 サイドバー
 ======================== */
 
+.sidebar {
+  display: none;
+}
+
 .sidebar h3 {
   font-size: 1rem;
   margin: 1em 0;
 }
-
-/*-- リンク集エリア --*/
-/*
-.link-area {
-  line-height: 1.8;
-}
-.link-area h3:before {
-  font-family: "Font Awesome 6 Free";
-  content: '\f1d8';
-  color: var(--accent-color);
-  margin-right: 0.5em;
-}
-.link-area ul li {
-  margin-top: 0.5em;
-  border-top: solid 0.5px #000;
-  padding-top: 10px;
-}
-*/
 
 /*-- 最新の記事エリア --*/
 .latest-pages {
@@ -470,17 +493,14 @@ CSSの優先度に注意。クラスを詳細に指定しないとプラグイ�
 
 /* start:「ACF」(カスタムフィールド) */
 
-/* パーキング情報(2:1) */
+/* パーキング情報 */
 .parking-info-container {
   display: grid;
 }
 .parking-info-container > img {
   width: 100%;
   max-width: 100%;
-  height: 240px;
-  /*不要?
-  object-fit: cover;
-  */
+  height: 300px;
 }
 .detail-container .spot-list,
 .detail-container .convenience-list
@@ -496,30 +516,16 @@ CSSの優先度に注意。クラスを詳細に指定しないとプラグイ�
   width: calc((100% - 50px) / 5);
 }
 
-/* パーキング情報(4:3) */
-.postid-244 .parking-info-container {
-  display: grid;
+.restaurant-container {
+  margin-top: 1em;
 }
-.postid-244 .parking-info-container > img {
-  width: 100%;
-  max-width: 100%;
-  height: 300px;
-  /*不要?
-  object-fit: cover;
-  */
-}
-.postid-244 .detail-container .spot-list,
-.postid-244 .detail-container .convenience-list
- {
+.restaurant-item {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 1rem;
+  align-items: center;
 }
-.postid-244 .detail-container .spot-icon,
-.postid-244 .detail-container .convenience-icon {
-  /* SP版はスポットアイコンは最大5コ並ぶ */
-  width: calc((100% - 50px) / 5);
+.restaurant-img {
+  display: inline-block;
 }
 
 /* 飲食店情報 */
@@ -947,6 +953,7 @@ div.ez-toc-widget-container li {
   サイドバー
   ======================== */
   .sidebar {
+    display: block;
     width: 18%;
   }
 
@@ -959,19 +966,6 @@ div.ez-toc-widget-container li {
   .sidebar h3 {
     margin-top: 0;
   }
-
-  /*-- リンク集エリア --*/
-  /*
-  .link-area {
-    padding: 2em;
-    margin-top: 40px;
-    background-color: #fff;
-    border-radius: 10px;
-  }
-  .link-area ul li {
-    margin: 0.625em 0.625em 0 1em ;
-  }
-  */
   
   /* 最新の記事エリア */
   .latest-pages {
@@ -1085,7 +1079,7 @@ div.ez-toc-widget-container li {
   .parking-info-container > img {
     /* 優先度を高くするためPC版でも表記 */
     max-width: 100%;
-    height: 220px;
+    height: 300px;
   }
   .detail-container .spot-list,
   .detail-container .convenience-list {
@@ -1093,30 +1087,6 @@ div.ez-toc-widget-container li {
   }
   .detail-container .spot-icon,
   .detail-container .convenience-icon {
-    /* PC版はスポットアイコンは最大8コ並ぶ */
-    width: calc((100% - 80px) / 8);
-  }
-
-  /* パーキング情報(4:3) */
-  .postid-244 .article-content .parking-info-container img {
-    margin-bottom: 0;
-  }
-  .postid-244 .parking-info-container {
-    grid-template-columns: repeat(2, 1fr);
-    justify-content: space-between;
-    gap: 30px;
-  }
-  .postid-244 .parking-info-container > img {
-    /* 優先度を高くするためPC版でも表記 */
-    max-width: 100%;
-    height: 300px;
-  }
-  .postid-244 .detail-container .spot-list,
-  .postid-244 .detail-container .convenience-list {
-    gap: 10px;
-  }
-  .postid-244 .detail-container .spot-icon,
-  .postid-244 .detail-container .convenience-icon {
     /* PC版はスポットアイコンは最大8コ並ぶ */
     width: calc((100% - 80px) / 8);
   }
